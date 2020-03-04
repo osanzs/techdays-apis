@@ -1,0 +1,316 @@
+swagger: '2.0'
+info:
+  description: API REST para el TechDay APIs de atSistemas
+  version: 1.0.0
+  title: Ejemplo de API
+  contact:
+    email: osanz@atsistemas.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost
+basePath: /techdayAPIs/1.0.0
+schemes:
+  - https
+security:
+  - OAuth2: []
+paths:
+  '/techday/{id}/employees':
+    post:
+      tags:
+        - techday
+      summary: Incluir un empleado en el techday
+      description: Incluir un empleado en el techday
+      operationId: addEmployeeTechday
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          pattern: '^[0-9]+$'
+          maxLength: 3
+        - name: EmployeeRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/EmployeeRequest'
+      responses:
+        '202':
+          description: Operación realizada con exito.
+          schema:
+            $ref: '#/definitions/EmployeeResponse'
+        '401':
+          description: No Autorizado
+          schema:
+            $ref: '#/definitions/TokenResponseUnauthorized'
+        '403':
+          description: Acceso prohibido
+          schema:
+            $ref: '#/definitions/TokenResponseForbidden'
+        '415':
+          description: Recurso no disponible
+          schema:
+            $ref: '#/definitions/TokenResponseMediaNotSupport'
+        '429':
+          description: Too many request
+          schema:
+            $ref: '#/definitions/TokenResponseTooManyRequest'
+        default:
+          description: Internal Errror
+          schema:
+            $ref: '#/definitions/TokenResponseInternalError'
+      security:
+        - OAuth2: []
+  '/techday/{id}/employees/{uuid}':
+    get:
+      tags:
+        - techday
+      summary: Obtener información de un empleado en el techday
+      description: Obtener información de un empleado en el techday
+      operationId: getEmployeeTechday
+      produces:
+        - application/json
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          type: string
+          pattern: '^[0-9_]+$'
+          maxLength: 150
+        - name: id
+          in: path
+          required: true
+          type: string
+          pattern: '^[0-9]+$'
+          maxLength: 3
+      responses:
+        '200':
+          description: Operación realizada con exito.
+          schema:
+            $ref: '#/definitions/EmployeeResponse'
+        '401':
+          description: No Autorizado
+          schema:
+            $ref: '#/definitions/TokenResponseUnauthorized'
+        '403':
+          description: Acceso prohibido
+          schema:
+            $ref: '#/definitions/TokenResponseForbidden'
+        '404':
+          description: Acceso prohibido
+          schema:
+            $ref: '#/definitions/TokenResponseNotFound'
+        '415':
+          description: Recurso no disponible
+          schema:
+            $ref: '#/definitions/TokenResponseMediaNotSupport'
+        '429':
+          description: Too many request
+          schema:
+            $ref: '#/definitions/TokenResponseTooManyRequest'
+        default:
+          description: Internal Errror
+          schema:
+            $ref: '#/definitions/TokenResponseInternalError'
+      security:
+        - OAuth2: []
+    delete:
+      tags:
+        - techday
+      summary: Eliminar un empleado en el techday
+      description: Eliminar un empleado en el techday
+      operationId: removeEmployeeTechday
+      produces:
+        - application/json
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          type: string
+          pattern: '^[0-9_]+$'
+          maxLength: 150
+        - name: id
+          in: path
+          required: true
+          type: string
+          pattern: '^[0-9]+$'
+          maxLength: 3
+      responses:
+        '204':
+          description: Operación realizada con exito.
+        '401':
+          description: No Autorizado
+          schema:
+            $ref: '#/definitions/TokenResponseUnauthorized'
+        '403':
+          description: Acceso prohibido
+          schema:
+            $ref: '#/definitions/TokenResponseForbidden'
+        '404':
+          description: Acceso prohibido
+          schema:
+            $ref: '#/definitions/TokenResponseNotFound'
+        '415':
+          description: Recurso no disponible
+          schema:
+            $ref: '#/definitions/TokenResponseMediaNotSupport'
+        '429':
+          description: Too many request
+          schema:
+            $ref: '#/definitions/TokenResponseTooManyRequest'
+        default:
+          description: Internal Errror
+          schema:
+            $ref: '#/definitions/TokenResponseInternalError'
+      security:
+        - OAuth2: []
+securityDefinitions:
+  OAuth2:
+    type: oauth2
+    authorizationUrl: 'https://example.com/oauth/authorize'
+    tokenUrl: 'https://example.com/oauth/token'
+    flow: accessCode
+    scopes:
+      aplication: Total access
+definitions:
+  EmployeeRequest:
+    type: object
+    properties:
+      nombre:
+        type: string
+        example: 'Oscar'
+        maxLength: 150
+        pattern: '^[a-zA-Z]+$'
+      apellido1:
+        type: string
+        example: 'Sanz'
+        maxLength: 150
+        pattern: '^[a-zA-Z]+$'
+      apellido2:
+        type: string
+        example: 'Sebastian'
+        maxLength: 150
+        pattern: '^[a-zA-Z]+$'
+      sede:
+        type: string
+        example: 'Madrid'
+        maxLength: 150
+        pattern: '^[a-zA-Z]+$'
+      modalidad:
+        type: string
+        example: 'Presencial'
+        maxLength: 150
+        pattern: '^[a-zA-Z]+$'
+  EmployeeResponse:
+    type: object
+    properties:
+        uuid:
+          type: string
+          example: '1113_33ad_333a'
+          maxLength: 150
+          pattern: '^[0-9_]+$'
+        nombre:
+          type: string
+          example: 'Oscar'
+          maxLength: 150
+          pattern: '^[a-zA-Z]+$'
+        apellido1:
+          type: string
+          example: 'Sanz'
+          maxLength: 150
+          pattern: '^[a-zA-Z]+$'
+        apellido2:
+          type: string
+          example: 'Sebastian'
+          maxLength: 150
+          pattern: '^[a-zA-Z]+$'
+        sede:
+          type: string
+          example: 'Madrid'
+          maxLength: 150
+          pattern: '^[a-zA-Z]+$'
+        modalidad:
+          type: string
+          example: 'Presencial'
+          maxLength: 150
+          pattern: '^[a-zA-Z]+$'
+  TokenResponseUnauthorized:
+    type: object
+    properties:
+      status:
+        type: string
+        maxLength: 250
+        example: '401'
+        pattern: '^[a-zA-Z0-9]+$'
+      message:
+        type: string
+        example: Error de authorización
+        maxLength: 250
+        pattern: '^[a-zA-Z0-9]+$'
+  TokenResponseForbidden:
+    type: object
+    properties:
+      status:
+        type: string
+        maxLength: 250
+        example: '403'
+        pattern: '^[a-zA-Z0-9]+$'
+      message:
+        type: string
+        example: Acceso prohibido
+        maxLength: 250
+        pattern: '^[a-zA-Z0-9]+$'
+  TokenResponseNotFound:
+    type: object
+    properties:
+      status:
+        type: string
+        maxLength: 250
+        example: '404'
+        pattern: '^[a-zA-Z0-9]+$'
+      message:
+        type: string
+        example: Cliente no encontrado
+        maxLength: 250
+        pattern: '^[a-zA-Z0-9]+$'
+  TokenResponseMediaNotSupport:
+    type: object
+    properties:
+      status:
+        type: string
+        maxLength: 250
+        example: '415'
+        pattern: '^[a-zA-Z0-9]+$'
+      message:
+        type: string
+        example: Medio no soportado
+        maxLength: 250
+        pattern: '^[a-zA-Z0-9]+$'
+  TokenResponseTooManyRequest:
+    type: object
+    properties:
+      status:
+        type: string
+        maxLength: 250
+        example: '429'
+        pattern: '^[a-zA-Z0-9]+$'
+      message:
+        type: string
+        example: El servicio ha recibido un exceso de solicitudes
+        maxLength: 250
+        pattern: '^[a-zA-Z0-9]+$'
+  TokenResponseInternalError:
+    type: object
+    properties:
+      status:
+        type: string
+        maxLength: 250
+        example: '500'
+        pattern: '^[a-zA-Z0-9]+$'
+      message:
+        type: string
+        example: 'Error interno, contacte con el administrador'
+        maxLength: 250
+        pattern: '^[a-zA-Z0-9]+$'
